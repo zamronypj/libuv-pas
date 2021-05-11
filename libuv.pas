@@ -16,11 +16,13 @@ uses
     {$ENDIF}
 
     {$IFDEF UNIX}
-    BaseUnix,
+    baseunix,
+    unixtype,
+    pthreads,
     {$ENDIF}
 
     sockets,
-    sysUtils;
+    sysutils;
 
 const
 
@@ -42,39 +44,6 @@ const
     UV_PRIORITIZED = 8;
 
 type
-
-    Pnodepas_constants = ^Tnodepas_constants;
-
-    Tnodepas_constants = record
-        (* fs open() flags supported on other platforms (or mapped on this platform): *)
-        uv_fs_o_direct: integer;
-        uv_fs_o_directory: integer;
-        uv_fs_o_dsync: integer;
-        uv_fs_o_exlock: integer;
-        uv_fs_o_noatime: integer;
-        uv_fs_o_noctty: integer;
-        uv_fs_o_nofollow: integer;
-        uv_fs_o_nonblock: integer;
-        uv_fs_o_symlink: integer;
-        uv_fs_o_sync: integer;
-
-        (* fs open() flags supported on this platform: *)
-        uv_fs_o_append: integer;
-        uv_fs_o_creat: integer;
-        uv_fs_o_excl: integer;
-        uv_fs_o_random: integer;
-        uv_fs_o_rdonly: integer;
-        uv_fs_o_rdwr: integer;
-        uv_fs_o_sequential: integer;
-        uv_fs_o_short_lived: integer;
-        uv_fs_o_temporary: integer;
-        uv_fs_o_trunc: integer;
-        uv_fs_o_wronly: integer;
-        f_ok: integer;
-        r_ok: integer;
-        w_ok: integer;
-        x_ok: integer;
-    end;
 
     uv_handle_type = (
         UV_UNKNOWN_HANDLE = 0,
@@ -249,6 +218,16 @@ const
 
 {$ENDIF}
 
+{$IFDEF LINUX}
+    {$IFDEF CPU32}
+        {$DEFINE LINUX32}
+    {$ENDIF}
+
+    {$IFDEF CPU64}
+        {$DEFINE LINUX64}
+    {$ENDIF}
+{$ENDIF}
+
 {$IFDEF LINUX64}
 
 const
@@ -398,7 +377,6 @@ type
 
     uv_handle_t = uv_handle_s;
 
-    puv_process_t = ^uv_process_t;
     puv_fs_event_t = ^uv_fs_event_t;
     puv_signal_t = ^uv_signal_t;
     puv_fs_t = ^uv_fs_t;
@@ -585,11 +563,7 @@ type
         UV_FS_COPYFILE_
     );
 
-    uv_timespec_t = record
-      tv_sec: integer;
-      tv_nsec: integer;
-      function toTimeStamp: Double;
-    end;
+    uv_timespec_t = timespec;
 
     uv_stat_t = record
       st_dev: UInt64;
@@ -657,17 +631,17 @@ type
       address: record
         case integer of
           0:
-            (address4: Tsockaddr_in;);
+            (address4: sockaddr_in;);
           1:
-            (address6: Tsockaddr_in6;);
+            (address6: sockaddr_in6;);
       end;
 
       netmask: record
         case integer of
           0:
-            (netmask4: Tsockaddr_in;);
+            (netmask4: sockaddr_in;);
           1:
-            (netmask6: Tsockaddr_in6;);
+            (netmask6: sockaddr_in6;);
       end;
     end;
 
@@ -675,17 +649,17 @@ type
     puv_interface_address_t = ^uv_interface_address_t;
 
     uv_dirent_s = record
-      name: PAnsiChar;
-      &type: uv_dirent_type_t;
+        name: PAnsiChar;
+        &type: uv_dirent_type_t;
     end;
 
     uv_dirent_t = uv_dirent_s;
     puv_dirent_t = ^uv_dirent_t;
 
     uv_passwd_s = record
-      username: PAnsiChar;
-      uid, gid: Long;
-      shell, homedir: PAnsiChar;
+        username: PAnsiChar;
+        uid, gid: Long;
+        shell, homedir: PAnsiChar;
     end;
 
     uv_passwd_t = uv_passwd_s;
@@ -710,38 +684,44 @@ type
   * UDP support.
 *)
 const
-    // uv_udp_flags = (
+
     (* Disables dual stack mode. *)
     UV_UDP_IPV6ONLY = 1;
-    UV_UDP_PARTIAL = 2;
-  (*
-    * Indicates message was truncated because read buffer was too small. The
-    * remainder was discarded by the OS. Used in uv_udp_recv_cb.
-  *)
-    UV_UDP_REUSEADDR = 4;
+
     (*
-      * Indicates if SO_REUSEADDR will be set when binding the handle.
-      * This sets the SO_REUSEPORT socket flag on the BSDs and OS X. On other
-      * Unix platforms, it sets the SO_REUSEADDR flag.  What that means is that
-      * multiple threads or processes can bind to the same address without error
-      * (provided they all set the flag) but only the last one to bind will receive
-      * any traffic, in effect "stealing" the port from the previous listener.
-    *)
-  // );
+     * Indicates message was truncated because read buffer was too small. The
+     * remainder was discarded by the OS. Used in uv_udp_recv_cb.
+     *)
+    UV_UDP_PARTIAL = 2;
+
+    (*
+     * Indicates if SO_REUSEADDR will be set when binding the handle.
+     * This sets the SO_REUSEPORT socket flag on the BSDs and OS X. On other
+     * Unix platforms, it sets the SO_REUSEADDR flag.  What that means is that
+     * multiple threads or processes can bind to the same address without error
+     * (provided they all set the flag) but only the last one to bind will receive
+     * any traffic, in effect "stealing" the port from the previous listener.
+     *)
+    UV_UDP_REUSEADDR = 4;
 
 
 type
-  (*
-    * uv_tty_t is a subclass of uv_stream_t.
-    *
-    * Representing a stream for the console.
-  *)
-  uv_tty_mode_t = ( (* Initial/normal terminal mode *)
-    UV_TTY_MODE_NORMAL,
-    (* Raw input mode (On Windows, ENABLE_WINDOW_INPUT is also enabled) *)
-    UV_TTY_MODE_RAW,
-    (* Binary-safe I/O mode for IPC (Unix-only) *)
-    UV_TTY_MODE_IO);
+
+    (*
+     * uv_tty_t is a subclass of uv_stream_t.
+     *
+     * Representing a stream for the console.
+     *)
+    uv_tty_mode_t = (
+        (* Initial/normal terminal mode *)
+        UV_TTY_MODE_NORMAL,
+
+        (* Raw input mode (On Windows, ENABLE_WINDOW_INPUT is also enabled) *)
+        UV_TTY_MODE_RAW,
+
+        (* Binary-safe I/O mode for IPC (Unix-only) *)
+        UV_TTY_MODE_IO
+    );
 
 // type
 
