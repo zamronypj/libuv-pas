@@ -14,25 +14,7 @@ function uv_version_string; external LIBUV_FILE;
 
 function uv_replace_allocator; external LIBUV_FILE;
 
-function uv_default_loop; external LIBUV_FILE;
-
-function uv_loop_init; external LIBUV_FILE;
-
-function uv_loop_close; external LIBUV_FILE;
-
-function uv_loop_new; external LIBUV_FILE;
-
-procedure uv_loop_delete; external LIBUV_FILE;
-
-function uv_loop_size; external LIBUV_FILE;
-
-function uv_loop_alive; external LIBUV_FILE;
-
-function uv_loop_configure; external LIBUV_FILE;
-
-function uv_run; external LIBUV_FILE;
-
-procedure uv_stop; external LIBUV_FILE;
+{$INCLUDE funcs/impl/loop.inc}
 
 procedure uv_ref; external LIBUV_FILE;
 
@@ -96,87 +78,13 @@ function uv_stream_set_blocking; external LIBUV_FILE;
 
 function uv_is_closing; external LIBUV_FILE;
 
-function uv_tcp_init; external LIBUV_FILE;
+{$INCLUDE funcs/impl/tcp.inc}
+{$INCLUDE funcs/impl/udp.inc}
+{$INCLUDE funcs/impl/tty.inc}
 
-function uv_tcp_init_ex; external LIBUV_FILE;
 
-function uv_tcp_open; external LIBUV_FILE;
-
-function uv_tcp_nodelay; external LIBUV_FILE;
-
-function uv_tcp_keepalive; external LIBUV_FILE;
-
-function uv_tcp_simultaneous_accepts; external LIBUV_FILE;
-
-function uv_tcp_bind; external LIBUV_FILE;
-
-function uv_tcp_getsockname; external LIBUV_FILE;
-
-function uv_tcp_getpeername; external LIBUV_FILE;
-
-function uv_tcp_connect; external LIBUV_FILE;
-function uv_udp_init; external LIBUV_FILE;
-
-function uv_udp_init_ex; external LIBUV_FILE;
-
-function uv_udp_open; external LIBUV_FILE;
-
-function uv_udp_bind; external LIBUV_FILE;
-
-function uv_udp_connect; external LIBUV_FILE;
-function uv_udp_getpeername; external LIBUV_FILE;
-function uv_udp_getsockname; external LIBUV_FILE;
-function uv_udp_get_send_queue_count; external LIBUV_FILE;
-function uv_udp_get_send_queue_size; external LIBUV_FILE;
-
-function uv_udp_set_membership; external LIBUV_FILE;
-
-function uv_udp_set_multicast_loop; external LIBUV_FILE;
-
-function uv_udp_set_multicast_ttl; external LIBUV_FILE;
-
-function uv_udp_set_multicast_interface; external LIBUV_FILE;
-
-function uv_udp_set_broadcast; external LIBUV_FILE;
-
-function uv_udp_set_ttl; external LIBUV_FILE;
-
-function uv_udp_send; external LIBUV_FILE;
-
-function uv_udp_try_send; external LIBUV_FILE;
-
-function uv_udp_recv_start; external LIBUV_FILE;
-
-function uv_udp_recv_stop; external LIBUV_FILE;
-
-function uv_tty_init; external LIBUV_FILE;
-
-function uv_tty_set_mode; external LIBUV_FILE;
-
-function uv_tty_reset_mode; external LIBUV_FILE;
-
-function uv_tty_get_winsize; external LIBUV_FILE;
 function uv_guess_handle; external LIBUV_FILE;
-
-function uv_pipe_init; external LIBUV_FILE;
-
-function uv_pipe_open; external LIBUV_FILE;
-
-function uv_pipe_bind; external LIBUV_FILE;
-
-procedure uv_pipe_connect; external LIBUV_FILE;
-
-function uv_pipe_getsockname; external LIBUV_FILE;
-
-function uv_pipe_getpeername; external LIBUV_FILE;
-
-procedure uv_pipe_pending_instances; external LIBUV_FILE;
-
-function uv_pipe_pending_count; external LIBUV_FILE;
-
-function uv_pipe_pending_type; external LIBUV_FILE;
-
-function uv_pipe_chmod; external LIBUV_FILE;
+{$INCLUDE funcs/impl/pipe.inc}
 
 function uv_poll_init; external LIBUV_FILE;
 

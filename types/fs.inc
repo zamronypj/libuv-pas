@@ -1,3 +1,11 @@
+{*!
+ * libuv header translation for Free Pascal
+ *
+ * @link      https://github.com/zamronypj/libuv-pas
+ * @copyright Copyright (c) 2021 Zamrony P. Juhara
+ * @license   https://github.com/zamronypj/libuv/blob/master/LICENSE (MIT)
+ *}
+
 type
 
     uv_fs_type = (
@@ -34,6 +42,8 @@ type
         UV_FS_REALPATH_,
         UV_FS_COPYFILE_
     );
+
+    uv_fs_cb = procedure(req: puv_fs_t); cdecl;
 
     // uv_fs_t is a subclass of uv_req_t.
     uv_fs_s = record

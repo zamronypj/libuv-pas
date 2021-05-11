@@ -18,7 +18,6 @@ type
     uv_idle_cb = procedure(handle: puv_idle_t); cdecl;
     uv_async_cb = procedure(handle: puv_async_t); cdecl;
     uv_signal_cb = procedure(handle: puv_signal_t; signum: integer); cdecl;
-    uv_fs_cb = procedure(req: puv_fs_t); cdecl;
     uv_work_cb = procedure(req: puv_work_t); cdecl;
     uv_after_work_cb = procedure(req: puv_work_t; Status: integer); cdecl;
 

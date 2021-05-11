@@ -1,3 +1,11 @@
+{*!
+ * libuv header translation for Free Pascal
+ *
+ * @link      https://github.com/zamronypj/libuv-pas
+ * @copyright Copyright (c) 2021 Zamrony P. Juhara
+ * @license   https://github.com/zamronypj/libuv/blob/master/LICENSE (MIT)
+ *}
+
 (*
   * This flag can be used with uv_fs_copyfile() to return an error if the
   * destination already exists.
