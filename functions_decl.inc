@@ -164,214 +164,16 @@ function uv_stream_set_blocking(
 
 function uv_is_closing(handle: puv_handle_t): integer; cdecl;
 
-(*
- * uv_tcp_t is a subclass of uv_stream_t.
- *
- * Represents a TCP stream or TCP server.
- *)
 
-function uv_tcp_init(loop: puv_loop_t; handle: puv_tcp_t): integer; cdecl;
+{$INCLUDE funcs/decl/tcp.inc}
 
-function uv_tcp_init_ex(
-    loop: puv_loop_t;
-    handle: puv_tcp_t;
-    flags: UInt
-) : integer; cdecl;
+{$INCLUDE funcs/decl/udp.inc}
 
-function uv_tcp_open(handle: puv_tcp_t; sock: uv_os_sock_t): integer; cdecl;
-
-function uv_tcp_nodelay(handle: puv_tcp_t; enable: integer): integer; cdecl;
-
-function uv_tcp_keepalive(
-    handle: puv_tcp_t;
-    enable: integer;
-    delay: UInt
-) : integer; cdecl;
-
-function uv_tcp_simultaneous_accepts(
-    handle: puv_tcp_t;
-    enable: integer
-) : integer; cdecl;
-
-function uv_tcp_bind(
-    handle: puv_tcp_t;
-    const addr: TSockAddr_in_any;
-    flags: UInt
-): integer; cdecl;
-
-function uv_tcp_getsockname(
-    handle: puv_tcp_t;
-    out name: TSockAddr_in_any;
-    var namelen: integer
-): integer; cdecl;
-
-function uv_tcp_getpeername(
-    handle: puv_tcp_t;
-    out name: TSockAddr_in_any;
-    var namelen: integer
-): integer; cdecl;
-
-(* uv_connect_t is a subclass of uv_req_t. *)
-
-function uv_tcp_connect(
-    req: puv_connect_t;
-    handle: puv_tcp_t;
-    addr: PSockAddr_in_any;
-    cb: uv_connect_cb
-): integer; cdecl;
-
-
-  (* uv_udp_t is a subclass of uv_handle_t. *)
-  (* uv_udp_send_t is a subclass of uv_req_t. *)
-
-function uv_udp_init(loop: puv_loop_t; handle: puv_udp_t): integer; cdecl;
-
-function uv_udp_init_ex(
-    loop: puv_loop_t;
-    handle: puv_udp_t;
-    flags: UInt
-) : integer; cdecl;
-
-function uv_udp_open(handle: puv_udp_t; sock: uv_os_sock_t): integer; cdecl;
-
-function uv_udp_bind(
-    handle: puv_udp_t;
-    const addr: TSockAddr_in_any;
-    flags: UInt
-): integer; cdecl;
-
-function uv_udp_connect(
-    handle: puv_udp_t;
-    const addr: TSockAddr_in_any
-) : integer; cdecl;
-
-function uv_udp_getsockname(
-    handle: puv_udp_t;
-    name: psockaddr;
-    var namelen: integer
-): integer; cdecl;
-
-function uv_udp_getpeername(
-    handle: puv_udp_t;
-    name: psockaddr;
-    var namelen: integer
-): integer; cdecl;
-
-function uv_udp_get_send_queue_count(const handle: puv_udp_t): SIZE_T;
-function uv_udp_get_send_queue_size(const handle: puv_udp_t): SIZE_T;
-
-function uv_udp_set_membership(
-    handle: puv_udp_t;
-    multicast_addr: PUTF8Char;
-    interface_addr: PUTF8Char;
-    membership: uv_membership
-): integer; cdecl;
-
-function uv_udp_set_multicast_loop(
-    handle: puv_udp_t;
-    &on: integer
-) : integer; cdecl;
-
-function uv_udp_set_multicast_ttl(
-    handle: puv_udp_t;
-    ttl: integer
-) : integer; cdecl;
-
-function uv_udp_set_multicast_interface(
-    handle: puv_udp_t;
-    interface_addr: PUTF8Char
-) : integer; cdecl;
-
-function uv_udp_set_broadcast(handle: puv_udp_t; &on: integer) : integer; cdecl;
-
-function uv_udp_set_ttl(handle: puv_udp_t; ttl: integer): integer; cdecl;
-
-function uv_udp_send(
-    req: puv_udp_send_t;
-    handle: puv_udp_t;
-    const bufs: puv_buf_t;
-    nbufs: UInt;
-    addr: psockaddr;
-    send_cb: uv_udp_send_cb
-) : integer; cdecl;
-
-function uv_udp_try_send(
-    handle: puv_udp_t;
-    const bufs: puv_buf_t;
-    nbufs: UInt;
-    addr: psockaddr
-) : integer; cdecl;
-
-function uv_udp_recv_start(
-    handle: puv_udp_t;
-    alloc_cb: uv_alloc_cb;
-    recv_cb: uv_udp_recv_cb
-): integer; cdecl;
-
-function uv_udp_recv_stop(handle: puv_udp_t): integer; cdecl;
-
-
-function uv_tty_init(
-    loop: puv_loop_t;
-    tty: puv_tty_t;
-    os_fd: uv_file;
-    unused: integer
-) : integer; cdecl;
-
-function uv_tty_set_mode(tty: puv_tty_t; mode: uv_tty_mode_t): integer; cdecl;
-
-function uv_tty_reset_mode: integer; cdecl;
-
-function uv_tty_get_winsize(
-    tty: puv_tty_t;
-    var width, height: integer
-) : integer; cdecl;
+{$INCLUDE funcs/decl/tty.inc}
 
 function uv_guess_handle(&file: uv_file): uv_handle_type; cdecl;
 
-(*
-  * uv_pipe_t is a subclass of uv_stream_t.
-  *
-  * Representing a pipe stream or pipe server. On Windows this is a Named
-  * Pipe. On Unix this is a Unix domain socket.
-*)
-
-function uv_pipe_init(
-    loop: puv_loop_t;
-    handle: puv_pipe_t;
-    ipc: integer
-) : integer; cdecl;
-
-function uv_pipe_open(pipe: puv_pipe_t; os_fd: uv_file): integer; cdecl;
-
-function uv_pipe_bind(handle: puv_pipe_t; name: PUTF8Char): integer; cdecl;
-
-procedure uv_pipe_connect(
-    req: puv_connect_t;
-    handle: puv_pipe_t;
-    name: PUTF8Char;
-    cb: uv_connect_cb
-); cdecl;
-
-function uv_pipe_getsockname(
-    handle: puv_pipe_t;
-    buffer: PUTF8Char;
-    var size: SIZE_T
-): integer; cdecl;
-
-function uv_pipe_getpeername(
-    handle: puv_pipe_t;
-    buffer: PUTF8Char;
-    var size: SIZE_T
-): integer; cdecl;
-
-procedure uv_pipe_pending_instances(handle: puv_pipe_t; count: integer); cdecl;
-
-function uv_pipe_pending_count(handle: puv_pipe_t): integer; cdecl;
-
-function uv_pipe_pending_type(handle: puv_pipe_t): uv_handle_type; cdecl;
-
-function uv_pipe_chmod(handle: puv_pipe_t; flags: integer): integer; cdecl;
+{$INCLUDE funcs/decl/pipe.inc}
 
 function uv_poll_init(loop: puv_loop_t; handle: puv_poll_t; fd: integer)
   : integer; cdecl;
@@ -408,24 +210,9 @@ function uv_async_init(loop: puv_loop_t; async: puv_async_t;
   async_cb: uv_async_cb): integer; cdecl;
 
 function uv_async_send(async: puv_async_t): integer; cdecl;
-(*
-  * uv_timer_t is a subclass of uv_handle_t.
-  *
-  * Used to get woken up at a specified time in the future.
-*)
 
-function uv_timer_init(loop: puv_loop_t; handle: puv_timer_t): integer; cdecl;
+{$INCLUDE funcs/decl/timer.inc}
 
-function uv_timer_start(handle: puv_timer_t; cb: uv_timer_cb; Timeout: UInt64;
-  &repeat: UInt64): integer; cdecl;
-
-function uv_timer_stop(handle: puv_timer_t): integer; cdecl;
-
-function uv_timer_again(handle: puv_timer_t): integer; cdecl;
-
-procedure uv_timer_set_repeat(handle: puv_timer_t; &repeat: UInt64); cdecl;
-
-function uv_timer_get_repeat(handle: puv_timer_t): UInt64; cdecl;
 (*
   * uv_getaddrinfo_t is a subclass of uv_req_t.
   *
@@ -498,7 +285,7 @@ function uv_interface_addresses(var addresses: puv_interface_address_t;
 procedure uv_free_interface_addresses(addresses: puv_interface_address_t;
   count: integer); cdecl;
 
-{$INCLUDE funcs/fs.inc}
+{$INCLUDE funcs/decl/fs.inc}
 
 function uv_signal_init(loop: puv_loop_t; handle: puv_signal_t): integer; cdecl;
 

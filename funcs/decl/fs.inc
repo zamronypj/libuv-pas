@@ -1,3 +1,11 @@
+{*!
+ * libuv header translation for Free Pascal
+ *
+ * @link      https://github.com/zamronypj/libuv-pas
+ * @copyright Copyright (c) 2021 Zamrony P. Juhara
+ * @license   https://github.com/zamronypj/libuv/blob/master/LICENSE (MIT)
+ *}
+
 procedure uv_fs_req_cleanup(req: puv_fs_t); cdecl;
 
 function uv_fs_get_type(const req: puv_fs_t): uv_fs_type; cdecl;

@@ -6,4 +6,5 @@
  * @license   https://github.com/zamronypj/libuv/blob/master/LICENSE (MIT)
  *}
 
-{$INCLUDE consts/fs.inc}
+{$INCLUDE types/loop.inc}
+{$INCLUDE types/fs.inc}

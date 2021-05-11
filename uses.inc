@@ -6,4 +6,18 @@
  * @license   https://github.com/zamronypj/libuv/blob/master/LICENSE (MIT)
  *}
 
-{$INCLUDE consts/fs.inc}
+uses
+
+    {$IFDEF MSWINDOWS}
+    Windows,
+    {$ENDIF}
+
+    {$IFDEF UNIX}
+    baseunix,
+    unixtype,
+    pthreads,
+    {$ENDIF}
+
+    sockets,
+    sysutils;
+
