@@ -626,62 +626,150 @@ function uv_fs_scandir(
 
 function uv_fs_scandir_next(req: puv_fs_t; ent: puv_dirent_t): integer; cdecl;
 
-function uv_fs_stat(loop: puv_loop_t; req: puv_fs_t; path: PUTF8Char;
-  cb: uv_fs_cb): integer; cdecl;
+function uv_fs_stat(
+    loop: puv_loop_t;
+    req: puv_fs_t;
+    path: PUTF8Char;
+    cb: uv_fs_cb
+) : integer; cdecl;
 
-function uv_fs_fstat(loop: puv_loop_t; req: puv_fs_t; &file: uv_file;
-  cb: uv_fs_cb): integer; cdecl;
+function uv_fs_fstat(
+    loop: puv_loop_t;
+    req: puv_fs_t;
+    &file: uv_file;
+    cb: uv_fs_cb
+) : integer; cdecl;
 
-function uv_fs_rename(loop: puv_loop_t; req: puv_fs_t; const path: PUTF8Char;
-  const new_path: PUTF8Char; cb: uv_fs_cb): integer; cdecl;
-
-
-function uv_fs_copyfile(loop: puv_loop_t; req: puv_fs_t; const path: PUTF8Char;
-  const new_path: PUTF8Char; flags: integer; cb: uv_fs_cb): integer; cdecl;
-
-function uv_fs_fsync(loop: puv_loop_t; req: puv_fs_t; &file: uv_file;
-  cb: uv_fs_cb): integer; cdecl;
-
-function uv_fs_fdatasync(loop: puv_loop_t; req: puv_fs_t; &file: uv_file;
-  cb: uv_fs_cb): integer; cdecl;
-
-function uv_fs_ftruncate(loop: puv_loop_t; req: puv_fs_t; &file: uv_file;
-  offset: Int64; cb: uv_fs_cb): integer; cdecl;
-
-function uv_fs_sendfile(loop: puv_loop_t; req: puv_fs_t; out_fd: uv_file;
-  in_fd: uv_file; in_offset: Int64; length: SIZE_T; cb: uv_fs_cb)
-  : integer; cdecl;
-
-function uv_fs_access(loop: puv_loop_t; req: puv_fs_t; path: PUTF8Char;
-  mode: integer; cb: uv_fs_cb): integer; cdecl;
-
-function uv_fs_chmod(loop: puv_loop_t; req: puv_fs_t; path: PUTF8Char;
-  mode: integer; cb: uv_fs_cb): integer; cdecl;
-
-function uv_fs_utime(loop: puv_loop_t; req: puv_fs_t; path: PUTF8Char;
-  atime: Double; mtime: Double; cb: uv_fs_cb): integer; cdecl;
-
-function uv_fs_futime(loop: puv_loop_t; req: puv_fs_t; &file: uv_file;
-  atime: Double; mtime: Double; cb: uv_fs_cb): integer; cdecl;
-
-function uv_fs_lstat(loop: puv_loop_t; req: puv_fs_t; path: PUTF8Char;
-  cb: uv_fs_cb): integer; cdecl;
-
-function uv_fs_link(loop: puv_loop_t; req: puv_fs_t; path: PUTF8Char;
-  new_path: PUTF8Char; cb: uv_fs_cb): integer; cdecl;
+function uv_fs_rename(
+    loop: puv_loop_t;
+    req: puv_fs_t;
+    const path: PUTF8Char;
+    const new_path: PUTF8Char;
+    cb: uv_fs_cb
+) : integer; cdecl;
 
 
-function uv_fs_symlink(loop: puv_loop_t; req: puv_fs_t; path: PUTF8Char;
-  new_path: PUTF8Char; flags: integer; cb: uv_fs_cb): integer; cdecl;
+function uv_fs_copyfile(
+    loop: puv_loop_t;
+    req: puv_fs_t;
+    const path: PUTF8Char;
+    const new_path: PUTF8Char;
+    flags: integer;
+    cb: uv_fs_cb
+) : integer; cdecl;
 
-function uv_fs_readlink(loop: puv_loop_t; req: puv_fs_t; path: PUTF8Char;
-  cb: uv_fs_cb): integer; cdecl;
+function uv_fs_fsync(
+    loop: puv_loop_t;
+    req: puv_fs_t;
+    &file: uv_file;
+    cb: uv_fs_cb
+) : integer; cdecl;
 
-function uv_fs_realpath(loop: puv_loop_t; req: puv_fs_t; path: PUTF8Char;
-  cb: uv_fs_cb): integer; cdecl;
+function uv_fs_fdatasync(
+    loop: puv_loop_t;
+    req: puv_fs_t;
+    &file: uv_file;
+    cb: uv_fs_cb
+) : integer; cdecl;
 
-function uv_fs_fchmod(loop: puv_loop_t; req: puv_fs_t; &file: uv_file;
-  mode: integer; cb: uv_fs_cb): integer; cdecl;
+function uv_fs_ftruncate(
+    loop: puv_loop_t;
+    req: puv_fs_t;
+    &file: uv_file;
+    offset: Int64;
+    cb: uv_fs_cb
+) : integer; cdecl;
+
+function uv_fs_sendfile(
+    loop: puv_loop_t;
+    req: puv_fs_t;
+    out_fd: uv_file;
+    in_fd: uv_file;
+    in_offset: Int64;
+    length: SIZE_T;
+    cb: uv_fs_cb
+) : integer; cdecl;
+
+function uv_fs_access(
+    loop: puv_loop_t;
+    req: puv_fs_t;
+    path: PUTF8Char;
+    mode: integer;
+    cb: uv_fs_cb
+) : integer; cdecl;
+
+function uv_fs_chmod(
+    loop: puv_loop_t;
+    req: puv_fs_t;
+    path: PUTF8Char;
+    mode: integer;
+    cb: uv_fs_cb
+) : integer; cdecl;
+
+function uv_fs_utime(
+    loop: puv_loop_t;
+    req: puv_fs_t;
+    path: PUTF8Char;
+    atime: Double;
+    mtime: Double;
+    cb: uv_fs_cb
+): integer; cdecl;
+
+function uv_fs_futime(
+    loop: puv_loop_t;
+    req: puv_fs_t;
+    &file: uv_file;
+    atime: Double;
+    mtime: Double;
+    cb: uv_fs_cb
+) : integer; cdecl;
+
+function uv_fs_lstat(
+    loop: puv_loop_t;
+    req: puv_fs_t;
+    path: PUTF8Char;
+    cb: uv_fs_cb
+) : integer; cdecl;
+
+function uv_fs_link(
+    loop: puv_loop_t;
+    req: puv_fs_t;
+    path: PUTF8Char;
+    new_path: PUTF8Char;
+    cb: uv_fs_cb
+) : integer; cdecl;
+
+
+function uv_fs_symlink(
+    loop: puv_loop_t;
+    req: puv_fs_t;
+    path: PUTF8Char;
+    new_path: PUTF8Char;
+    flags: integer;
+    cb: uv_fs_cb
+) : integer; cdecl;
+
+function uv_fs_readlink(
+    loop: puv_loop_t;
+    req: puv_fs_t;
+    path: PUTF8Char;
+    cb: uv_fs_cb
+) : integer; cdecl;
+
+function uv_fs_realpath(
+    loop: puv_loop_t;
+    req: puv_fs_t;
+    path: PUTF8Char;
+    cb: uv_fs_cb
+) : integer; cdecl;
+
+function uv_fs_fchmod(
+    loop: puv_loop_t;
+    req: puv_fs_t;
+    &file: uv_file;
+    mode: integer;
+    cb: uv_fs_cb
+) : integer; cdecl;
 
 function uv_fs_chown(loop: puv_loop_t; req: puv_fs_t; path: PUTF8Char;
   uid: uv_uid_t; gid: uv_gid_t; cb: uv_fs_cb): integer; cdecl;
