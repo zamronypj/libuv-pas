@@ -168,6 +168,8 @@ const
     sizeof_mutex_t = 40;
 {$ENDIF}
 
+{$INCLUDE consts.inc}
+
 {$IFDEF MSWINDOWS}
 
 type
@@ -377,9 +379,7 @@ type
 
     uv_handle_t = uv_handle_s;
 
-    puv_fs_event_t = ^uv_fs_event_t;
     puv_signal_t = ^uv_signal_t;
-    puv_fs_t = ^uv_fs_t;
     puv_work_t = ^uv_work_t;
 
     uv_write_s = record
@@ -473,23 +473,11 @@ type
     uv_process_t = uv_process_s;
     puv_process_t = ^uv_process_t;
 
-    uv_fs_event_s = record
-        internal: array [1 .. sizeof_fs_event_t] of Byte;
-    end;
-
-    uv_fs_event_t = uv_fs_event_s;
-
-    uv_fs_poll_s = record
-        internal: array [1 .. sizeof_fs_poll_t] of Byte;
-    end;
-
-    uv_fs_poll_t = uv_fs_poll_s;
-    puv_fs_poll_t = ^uv_fs_poll_t;
-
     uv_signal_s = record
         internal: array [1 .. sizeof_signal_t] of Byte;
     end;
 
+    {$INCLUDE types/fs.inc}
     uv_signal_t = uv_signal_s;
 
     uv_getaddrinfo_s = record
@@ -528,40 +516,6 @@ type
     puv_udp_send_t = ^uv_udp_send_t;
 
 
-    uv_fs_type = (
-        UV_FS_UNKNOWN = -1,
-        UV_FS_CUSTOM,
-        UV_FS_OPEN_,
-        UV_FS_CLOSE_,
-        UV_FS_READ_,
-        UV_FS_WRITE_,
-        UV_FS_SENDFILE_,
-        UV_FS_STAT_,
-        UV_FS_LSTAT_,
-        UV_FS_FSTAT_,
-        UV_FS_FTRUNCATE_,
-        UV_FS_UTIME_,
-        UV_FS_FUTIME_,
-        UV_FS_ACCESS_,
-        UV_FS_CHMOD_,
-        UV_FS_FCHMOD_,
-        UV_FS_FSYNC_,
-        UV_FS_FDATASYNC_,
-        UV_FS_UNLINK_,
-        UV_FS_RMDIR_,
-        UV_FS_MKDIR_,
-        UV_FS_MKDTEMP_,
-        UV_FS_RENAME_,
-        UV_FS_SCANDIR_,
-        UV_FS_LINK_,
-        UV_FS_SYMLINK_,
-        UV_FS_READLINK_,
-        UV_FS_CHOWN_,
-        UV_FS_FCHOWN_,
-        UV_FS_LCHOWN_,
-        UV_FS_REALPATH_,
-        UV_FS_COPYFILE_
-    );
 
     uv_timespec_t = timespec;
 
@@ -585,24 +539,6 @@ type
     end;
 
     puv_stat_t = ^uv_stat_t;
-
-    // uv_fs_t is a subclass of uv_req_t.
-    uv_fs_s = record
-      case Boolean of
-        true:
-          (internal: array [1 .. sizeof_fs_t] of Byte);
-        false:
-          (req: uv_req_t;
-            fs_type: uv_fs_type;
-            loop: puv_loop_t;
-            cb: uv_fs_cb;
-            result: SSIZE_T;
-            ptr: Pointer;
-            path: PUTF8Char;
-            statbuf: uv_stat_t;);
-    end;
-
-    uv_fs_t = uv_fs_s;
 
     uv_work_s = record
       internal: array [1 .. sizeof_work_t] of Byte;
@@ -882,38 +818,6 @@ type
 
   puv_rusage_t = ^uv_rusage_t;
 
-(*
-  * This flag can be used with uv_fs_copyfile() to return an error if the
-  * destination already exists.
-*)
-const
-  UV_FS_COPYFILE_EXCL = $1;
-
-  (*
-    * This flag can be used with uv_fs_copyfile() to attempt to create a reflink.
-    * If copy-on-write is not supported, a fallback copy mechanism is used.
-  *)
-  UV_FS_COPYFILE_FICLONE = $2;
-
-  (*
-    * This flag can be used with uv_fs_copyfile() to attempt to create a reflink.
-    * If copy-on-write is not supported, an error is returned.
-  *)
-  UV_FS_COPYFILE_FICLONE_FORCE = $4;
-
-
-(*
-  * This flag can be used with uv_fs_symlink() on Windows to specify whether
-  * path argument points to a directory.
-*)
-const
-  UV_FS_SYMLINK_DIR = $0001;
-  (*
-    * This flag can be used with uv_fs_symlink() on Windows to specify whether
-    * the symlink is to be created using junction points.
-  *)
-  UV_FS_SYMLINK_JUNCTION = $0002;
-
 
 type
   uv_fs_event = integer;
@@ -926,33 +830,6 @@ const
 
 type
   uv_loadavg_param = array [0 .. 2] of Double;
-
-type
-  (*
-    * Flags to be passed to uv_fs_event_start().
-  *)
-  uv_fs_event_flags = ( (*
-      * By default, if the fs event watcher is given a directory name, we will
-      * watch for all events in that directory. This flags overrides this behavior
-      * and makes fs_event report only changes to the directory entry itself. This
-      * flag does not affect individual files watched.
-      * This flag is currently not implemented yet on any backend.
-    *)
-    UV_FS_EVENT_WATCH_ENTRY = 1, UV_FS_EVENT_STAT = 2,
-    (*
-      * By default uv_fs_event will try to use a kernel interface such as inotify
-      * or kqueue to detect events. This may not work on remote filesystems such
-      * as NFS mounts. This flag makes fs_event fall back to calling stat() on a
-      * regular interval.
-      * This flag is currently not implemented yet on any backend.
-    *)
-    UV_FS_EVENT_RECURSIVE = 4
-    (*
-      * By default, event watcher, when watching directory, is not registering
-      * (is ignoring) changes in it's subdirectories.
-      * This flag will override this behaviour on platforms that support it.
-    *)
-    );
 
 
 {$INCLUDE callbacks.inc}
