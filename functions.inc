@@ -109,7 +109,7 @@ function uv_recv_buffer_size(
 
 function uv_fileno(handle: puv_handle_t; var fd: uv_os_fd_t): integer; cdecl;
 
-function uv_buf_init(Base: PByte; len: Cardinal): uv_buf_t;
+function uv_buf_init(Base: PByte; len: Cardinal): uv_buf_t; cdecl;
 
 function uv_listen(
     stream: puv_stream_t;
@@ -148,7 +148,7 @@ function uv_try_write(
     handle: puv_stream_t;
     const bufs: puv_buf_t;
     nbufs: UInt
-): integer;
+): integer; cdecl;
 
 (* uv_write_t is a subclass of uv_req_t. *)
 
@@ -771,18 +771,32 @@ function uv_fs_fchmod(
     cb: uv_fs_cb
 ) : integer; cdecl;
 
-function uv_fs_chown(loop: puv_loop_t; req: puv_fs_t; path: PUTF8Char;
-  uid: uv_uid_t; gid: uv_gid_t; cb: uv_fs_cb): integer; cdecl;
+function uv_fs_chown(
+    loop: puv_loop_t;
+    req: puv_fs_t;
+    path: PUTF8Char;
+    uid: uv_uid_t;
+    gid: uv_gid_t;
+    cb: uv_fs_cb
+): integer; cdecl;
 
-function uv_fs_fchown(loop: puv_loop_t; req: puv_fs_t; &file: uv_file;
-  uid: uv_uid_t; gid: uv_gid_t; cb: uv_fs_cb): integer; cdecl;
+function uv_fs_fchown(
+    loop: puv_loop_t;
+    req: puv_fs_t;
+    &file: uv_file;
+    uid: uv_uid_t;
+    gid: uv_gid_t;
+    cb: uv_fs_cb
+): integer; cdecl;
 
   (*
     * uv_fs_stat() based polling file watcher.
   *)
 
-function uv_fs_poll_init(loop: puv_loop_t; handle: puv_fs_poll_t)
-  : integer; cdecl;
+function uv_fs_poll_init(
+    loop: puv_loop_t;
+    handle: puv_fs_poll_t
+) : integer; cdecl;
 
 function uv_fs_poll_start(handle: puv_fs_poll_t; poll_cb: uv_fs_poll_cb;
   path: PUTF8Char; interval: UInt): integer; cdecl;
@@ -817,7 +831,7 @@ function uv_fs_event_stop(handle: puv_fs_event_t): integer; cdecl;
 function uv_fs_event_getpath(handle: puv_fs_event_t; buffer: PUTF8Char;
   var size: SIZE_T): integer; cdecl;
 
-function uv_get_osfhandle(fd: uv_file): uv_os_fd_t; inline;
+function uv_get_osfhandle(fd: uv_file): uv_os_fd_t; cdecl;
 
 function uv_ip4_addr(ip: PAnsiChar; Port: integer; out addr: sockaddr_in)
   : integer; cdecl;
