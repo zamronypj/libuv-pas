@@ -1014,23 +1014,27 @@ function uv_has_ref(const handle: puv_handle_t): integer; cdecl; external LIBUV_
 
 procedure uv_update_time(loop: puv_loop_t); cdecl; external LIBUV_FILE;
 
-function uv_no; external LIBUV_FILE;
+function uv_nouv_no(loop: puv_loop_t): UInt64; cdecl; external LIBUV_FILE;
 
-function uv_backend_fd; external LIBUV_FILE;
+function uv_backend_fd(const loop: puv_loop_t): integer; cdecl; external LIBUV_FILE;
 
-function uv_backend_timeout; external LIBUV_FILE;
+function uv_backend_timeout(const loop: puv_loop_t): integer; cdecl; external LIBUV_FILE;
 
-function uv_strerror; external LIBUV_FILE;
+function uv_strerror(err: integer): PAnsiChar; cdecl; external LIBUV_FILE;
 
-function uv_err_name; external LIBUV_FILE;
+function uv_err_name(err: integer): PAnsiChar; cdecl; external LIBUV_FILE;
 
-function uv_shutdown; external LIBUV_FILE;
+function uv_shutdown(
+    req: puv_shutdown_t;
+    handle: puv_stream_t;
+    cb: uv_shutdown_cb
+): integer; cdecl; external LIBUV_FILE;
 
-function uv_handle_size; external LIBUV_FILE;
+function uv_handle_size(&type: uv_handle_type): SIZE_T; cdecl; external LIBUV_FILE;
 
-function uv_is_active; external LIBUV_FILE;
+function uv_is_active(handle: puv_handle_t): integer; cdecl; external LIBUV_FILE;
 
-procedure uv_walk; external LIBUV_FILE;
+procedure uv_walk(loop: puv_loop_t; walk_cb: uv_walk_cb; arg: pinteger); cdecl; external LIBUV_FILE;
 
 procedure uv_print_all_handles; external LIBUV_FILE;
 
@@ -1038,96 +1042,220 @@ procedure uv_print_active_handles; external LIBUV_FILE;
 
 procedure uv_close; external LIBUV_FILE;
 
-function uv_send_buffer_size; external LIBUV_FILE;
+function uv_send_buffer_size(
+    handle: puv_handle_t;
+    value: pinteger
+) : integer; cdecl; external LIBUV_FILE;
 
-function uv_recv_buffer_size; external LIBUV_FILE;
+function uv_recv_buffer_size(
+    handle: puv_handle_t;
+    value: pinteger
+) : integer; cdecl; external LIBUV_FILE;
 
-function uv_fileno; external LIBUV_FILE;
+function uv_fileno(handle: puv_handle_t; var fd: uv_os_fd_t): integer; cdecl; external LIBUV_FILE;
 
 // function uv_buf_init; external LIBUV_FILE;
 
-function uv_listen; external LIBUV_FILE;
+function uv_listen(
+    stream: puv_stream_t;
+    backlog: integer;
+    cb: uv_connection_cb
+) : integer; cdecl; external LIBUV_FILE;
 
-function uv_accept; external LIBUV_FILE;
+function uv_accept(server: puv_stream_t; client: puv_stream_t): integer; cdecl; external LIBUV_FILE;
 
-function uv_read_start; external LIBUV_FILE;
+function uv_read_start(
+    req: puv_stream_t;
+    alloc_cb: uv_alloc_cb;
+    read_cb: uv_read_cb
+): integer; cdecl; external LIBUV_FILE;
 
-function uv_read_stop; external LIBUV_FILE;
+function uv_read_stop(req: puv_stream_t): integer; cdecl; external LIBUV_FILE;
 
-function uv_write; external LIBUV_FILE;
+function uv_write(
+    req: puv_write_t;
+    handle: puv_stream_t;
+    const bufs: puv_buf_t;
+    nbufs: UInt;
+    cb: uv_write_cb
+): integer; cdecl; external LIBUV_FILE;
 
-function uv_write2; external LIBUV_FILE;
+function uv_write2(
+    req: puv_write_t;
+    handle: puv_stream_t;
+    const bufs: puv_buf_t;
+    nbufs: UInt;
+    send_handle: puv_stream_t;
+    cb: uv_write_cb
+): integer; cdecl; external LIBUV_FILE;
 
-function uv_try_write; external LIBUV_FILE;
+function uv_try_write(
+    handle: puv_stream_t;
+    const bufs: puv_buf_t;
+    nbufs: UInt
+): integer; external LIBUV_FILE;
 
-function uv_is_readable; external LIBUV_FILE;
+function uv_is_readable(handle: puv_stream_t): integer; cdecl; external LIBUV_FILE;
 
-function uv_is_writable; external LIBUV_FILE;
+function uv_is_writable(handle: puv_stream_t): integer; cdecl; external LIBUV_FILE;
 
-function uv_stream_set_blocking; external LIBUV_FILE;
+function uv_stream_set_blocking(
+    handle: puv_stream_t;
+    blocking: integer
+) : integer; cdecl; external LIBUV_FILE;
 
-function uv_is_closing; external LIBUV_FILE;
+function uv_is_closing(handle: puv_handle_t): integer; cdecl; external LIBUV_FILE;
 
-function uv_tcp_init; external LIBUV_FILE;
+function uv_tcp_init(loop: puv_loop_t; handle: puv_tcp_t): integer; cdecl; external LIBUV_FILE;
 
-function uv_tcp_init_ex; external LIBUV_FILE;
+function uv_tcp_init_ex(
+    loop: puv_loop_t;
+    handle: puv_tcp_t;
+    flags: UInt
+) : integer; cdecl; external LIBUV_FILE;
 
-function uv_tcp_open; external LIBUV_FILE;
+function uv_tcp_open(handle: puv_tcp_t; sock: uv_os_sock_t): integer; cdecl; external LIBUV_FILE;
 
-function uv_tcp_nodelay; external LIBUV_FILE;
+function uv_tcp_nodelay(handle: puv_tcp_t; enable: integer): integer; cdecl; external LIBUV_FILE;
 
-function uv_tcp_keepalive; external LIBUV_FILE;
+function uv_tcp_keepalive(
+    handle: puv_tcp_t;
+    enable: integer;
+    delay: UInt
+) : integer; cdecl; external LIBUV_FILE;
 
-function uv_tcp_simultaneous_accepts; external LIBUV_FILE;
+function uv_tcp_simultaneous_accepts(
+    handle: puv_tcp_t;
+    enable: integer
+) : integer; cdecl; external LIBUV_FILE;
 
-function uv_tcp_bind; external LIBUV_FILE;
+function uv_tcp_bind(
+    handle: puv_tcp_t;
+    const addr: sockaddr;
+    flags: UInt
+): integer; cdecl; external LIBUV_FILE;
 
-function uv_tcp_getsockname; external LIBUV_FILE;
+function uv_tcp_getsockname(
+    handle: puv_tcp_t;
+    out name: sockaddr;
+    var namelen: integer
+): integer; cdecl; external LIBUV_FILE;
 
-function uv_tcp_getpeername; external LIBUV_FILE;
+function uv_tcp_getpeername(
+    handle: puv_tcp_t;
+    out name: sockaddr;
+    var namelen: integer
+): integer; cdecl; external LIBUV_FILE;
 
-function uv_tcp_connect; external LIBUV_FILE;
-function uv_udp_init; external LIBUV_FILE;
+function uv_tcp_connect(
+    req: puv_connect_t;
+    handle: puv_tcp_t;
+    addr: psockaddr;
+    cb: uv_connect_cb
+): integer; cdecl; external LIBUV_FILE;
 
-function uv_udp_init_ex; external LIBUV_FILE;
+function uv_udp_init(loop: puv_loop_t; handle: puv_udp_t): integer; cdecl; external LIBUV_FILE;
 
-function uv_udp_open; external LIBUV_FILE;
+function uv_udp_init_ex(
+    loop: puv_loop_t;
+    handle: puv_udp_t;
+    flags: UInt
+) : integer; cdecl; external LIBUV_FILE;
 
-function uv_udp_bind; external LIBUV_FILE;
+function uv_udp_open(handle: puv_udp_t; sock: uv_os_sock_t): integer; cdecl; external LIBUV_FILE;
 
-function uv_udp_connect; external LIBUV_FILE;
-function uv_udp_getpeername; external LIBUV_FILE;
-function uv_udp_getsockname; external LIBUV_FILE;
-function uv_udp_get_send_queue_count; external LIBUV_FILE;
-function uv_udp_get_send_queue_size; external LIBUV_FILE;
+function uv_udp_bind(
+    handle: puv_udp_t;
+    const addr: sockaddr;
+    flags: UInt
+): integer; cdecl; external LIBUV_FILE;
 
-function uv_udp_set_membership; external LIBUV_FILE;
+function uv_udp_connect(
+    handle: puv_udp_t;
+    const addr: sockaddr
+) : integer; cdecl; external LIBUV_FILE;
 
-function uv_udp_set_multicast_loop; external LIBUV_FILE;
+function uv_udp_getpeername(
+    handle: puv_udp_t;
+    name: psockaddr;
+    var namelen: integer
+): integer; cdecl; external LIBUV_FILE;
 
-function uv_udp_set_multicast_ttl; external LIBUV_FILE;
+function uv_udp_getsockname(
+    handle: puv_udp_t;
+    name: psockaddr;
+    var namelen: integer
+): integer; cdecl; external LIBUV_FILE;
 
-function uv_udp_set_multicast_interface; external LIBUV_FILE;
+function uv_udp_get_send_queue_count(const handle: puv_udp_t): SIZE_T;cdecl; external LIBUV_FILE;
+function uv_udp_get_send_queue_size(const handle: puv_udp_t): SIZE_T;cdecl; external LIBUV_FILE;
 
-function uv_udp_set_broadcast; external LIBUV_FILE;
+function uv_udp_set_membership(
+    handle: puv_udp_t;
+    multicast_addr: PUTF8Char;
+    interface_addr: PUTF8Char;
+    membership: uv_membership
+): integer; cdecl; external LIBUV_FILE;
 
-function uv_udp_set_ttl; external LIBUV_FILE;
+function uv_udp_set_multicast_loop(
+    handle: puv_udp_t;
+    &on: integer
+) : integer; cdecl; external LIBUV_FILE;
 
-function uv_udp_send; external LIBUV_FILE;
+function uv_udp_set_multicast_ttl(
+    handle: puv_udp_t;
+    ttl: integer
+) : integer; cdecl; external LIBUV_FILE;
 
-function uv_udp_try_send; external LIBUV_FILE;
+function uv_udp_set_multicast_interface(
+    handle: puv_udp_t;
+    interface_addr: PUTF8Char
+) : integer; cdecl; external LIBUV_FILE;
 
-function uv_udp_recv_start; external LIBUV_FILE;
+function uv_udp_set_broadcast(handle: puv_udp_t; &on: integer) : integer; cdecl; external LIBUV_FILE;
 
-function uv_udp_recv_stop; external LIBUV_FILE;
+function uv_udp_set_ttl(handle: puv_udp_t; ttl: integer): integer; cdecl; external LIBUV_FILE;
 
-function uv_tty_init; external LIBUV_FILE;
+function uv_udp_send(
+    req: puv_udp_send_t;
+    handle: puv_udp_t;
+    const bufs: puv_buf_t;
+    nbufs: UInt;
+    addr: psockaddr;
+    send_cb: uv_udp_send_cb
+) : integer; cdecl; external LIBUV_FILE;
 
-function uv_tty_set_mode; external LIBUV_FILE;
+function uv_udp_try_send(
+    handle: puv_udp_t;
+    const bufs: puv_buf_t;
+    nbufs: UInt;
+    addr: psockaddr
+) : integer; cdecl; external LIBUV_FILE;
 
-function uv_tty_reset_mode; external LIBUV_FILE;
+function uv_udp_recv_start(
+    handle: puv_udp_t;
+    alloc_cb: uv_alloc_cb;
+    recv_cb: uv_udp_recv_cb
+): integer; cdecl; external LIBUV_FILE;
 
-function uv_tty_get_winsize; external LIBUV_FILE;
+function uv_udp_recv_stop(handle: puv_udp_t): integer; cdecl; external LIBUV_FILE;
+
+function uv_tty_init(
+    loop: puv_loop_t;
+    tty: puv_tty_t;
+    os_fd: uv_file;
+    unused: integer
+) : integer; cdecl; external LIBUV_FILE;
+
+function uv_tty_set_mode(tty: puv_tty_t; mode: uv_tty_mode_t): integer; cdecl; external LIBUV_FILE;
+
+function uv_tty_reset_mode: integer; cdecl; external LIBUV_FILE;
+
+function uv_tty_get_winsize(
+    tty: puv_tty_t;
+    var width, height: integer
+) : integer; cdecl; external LIBUV_FILE;
+
 function uv_guess_handle; external LIBUV_FILE;
 
 function uv_pipe_init; external LIBUV_FILE;
@@ -1208,12 +1336,12 @@ function uv_kill; external LIBUV_FILE;
 
 function uv_queue_work; external LIBUV_FILE;
 
-function uv_cancel; external LIBUV_FILE;
-function uv_req_size; external LIBUV_FILE;
-function uv_req_get_data; external LIBUV_FILE;
-procedure uv_req_set_data; external LIBUV_FILE;
-function uv_req_get_type; external LIBUV_FILE;
-function uv_req_type_name; external LIBUV_FILE;
+function uv_cancel(req: puv_req_t): integer; cdecl; external LIBUV_FILE;
+function uv_req_size(&type: uv_req_type): SIZE_T; cdecl; external LIBUV_FILE;
+function uv_req_get_data(const req: puv_req_t): Pointer; cdecl; external LIBUV_FILE;
+procedure uv_req_set_data(const req: puv_req_t; data: Pointer); cdecl; external LIBUV_FILE;
+function uv_req_get_type(const req: puv_req_t): uv_req_type; cdecl; external LIBUV_FILE;
+function uv_req_type_name(const req: puv_req_t): PAnsiChar; cdecl; external LIBUV_FILE;
 
 function uv_setup_args; external LIBUV_FILE;
 

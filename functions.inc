@@ -256,8 +256,8 @@ function uv_udp_getpeername(
     var namelen: integer
 ): integer; cdecl;
 
-function uv_udp_get_send_queue_count(const handle: puv_udp_t): SIZE_T;
-function uv_udp_get_send_queue_size(const handle: puv_udp_t): SIZE_T;
+function uv_udp_get_send_queue_count(const handle: puv_udp_t): SIZE_T;cdecl;
+function uv_udp_get_send_queue_size(const handle: puv_udp_t): SIZE_T;cdecl;
 
 function uv_udp_set_membership(
     handle: puv_udp_t;
