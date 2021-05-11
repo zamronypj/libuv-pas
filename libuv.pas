@@ -1256,59 +1256,98 @@ function uv_tty_get_winsize(
     var width, height: integer
 ) : integer; cdecl; external LIBUV_FILE;
 
-function uv_guess_handle; external LIBUV_FILE;
+function uv_guess_handle(&file: uv_file): uv_handle_type; cdecl; external LIBUV_FILE;
 
-function uv_pipe_init; external LIBUV_FILE;
+function uv_pipe_init(
+    loop: puv_loop_t;
+    handle: puv_pipe_t;
+    ipc: integer
+) : integer; cdecl; external LIBUV_FILE;
 
-function uv_pipe_open; external LIBUV_FILE;
+function uv_pipe_open(pipe: puv_pipe_t; os_fd: uv_file): integer; cdecl; external LIBUV_FILE;
 
-function uv_pipe_bind; external LIBUV_FILE;
+function uv_pipe_bind(handle: puv_pipe_t; name: PUTF8Char): integer; cdecl; external LIBUV_FILE;
 
-procedure uv_pipe_connect; external LIBUV_FILE;
+procedure uv_pipe_connect(
+    req: puv_connect_t;
+    handle: puv_pipe_t;
+    name: PUTF8Char;
+    cb: uv_connect_cb
+); cdecl; external LIBUV_FILE;
 
-function uv_pipe_getsockname; external LIBUV_FILE;
+function uv_pipe_getsockname(
+    handle: puv_pipe_t;
+    buffer: PUTF8Char;
+    var size: SIZE_T
+): integer; cdecl; external LIBUV_FILE;
 
-function uv_pipe_getpeername; external LIBUV_FILE;
+function uv_pipe_getpeername(
+    handle: puv_pipe_t;
+    buffer: PUTF8Char;
+    var size: SIZE_T
+): integer; cdecl; external LIBUV_FILE;
 
-procedure uv_pipe_pending_instances; external LIBUV_FILE;
+procedure uv_pipe_pending_instances(handle: puv_pipe_t; count: integer); cdecl; external LIBUV_FILE;
 
-function uv_pipe_pending_count; external LIBUV_FILE;
+function uv_pipe_pending_count(handle: puv_pipe_t): integer; cdecl; external LIBUV_FILE;
 
-function uv_pipe_pending_type; external LIBUV_FILE;
+function uv_pipe_pending_type(handle: puv_pipe_t): uv_handle_type; cdecl; external LIBUV_FILE;
 
-function uv_pipe_chmod; external LIBUV_FILE;
+function uv_pipe_chmod(handle: puv_pipe_t; flags: integer): integer; cdecl; external LIBUV_FILE;
 
-function uv_poll_init; external LIBUV_FILE;
+function uv_poll_init(
+    loop: puv_loop_t;
+    handle: puv_poll_t;
+    fd: integer
+) : integer; cdecl; external LIBUV_FILE;
 
-function uv_poll_init_socket; external LIBUV_FILE;
+function uv_poll_init_socket(
+    loop: puv_loop_t;
+    handle: puv_poll_t;
+    socket: uv_os_sock_t
+): integer; cdecl; external LIBUV_FILE;
 
-function uv_poll_start; external LIBUV_FILE;
+function uv_poll_start(
+    handle: puv_poll_t;
+    events: integer;
+    cb: uv_poll_cb
+) : integer; cdecl; external LIBUV_FILE;
 
-function uv_poll_stop; external LIBUV_FILE;
+function uv_poll_stop(handle: puv_poll_t): integer; cdecl; external LIBUV_FILE;
 
-function uv_prepare_init; external LIBUV_FILE;
+function uv_prepare_init(
+  loop: puv_loop_t;
+  prepare: puv_prepare_t
+) : integer; cdecl; external LIBUV_FILE;
 
-function uv_prepare_start; external LIBUV_FILE;
+function uv_prepare_start(
+  prepare: puv_prepare_t;
+  cb: uv_prepare_cb
+) : integer; cdecl; external LIBUV_FILE;
 
-function uv_prepare_stop; external LIBUV_FILE;
+function uv_prepare_stop(prepare: puv_prepare_t): integer; cdecl; external LIBUV_FILE;
 
-function uv_check_init; external LIBUV_FILE;
+function uv_check_init(loop: puv_loop_t; check: puv_check_t): integer; cdecl; external LIBUV_FILE;
 
-function uv_check_start; external LIBUV_FILE;
+function uv_check_start(check: puv_check_t; cb: uv_check_cb): integer; cdecl; external LIBUV_FILE;
 
-function uv_check_stop; external LIBUV_FILE;
+function uv_check_stop(check: puv_check_t): integer; cdecl; external LIBUV_FILE;
 
-function uv_idle_init; external LIBUV_FILE;
+function uv_idle_init(loop: puv_loop_t; idle: puv_idle_t): integer; cdecl; external LIBUV_FILE;
 
-function uv_idle_start; external LIBUV_FILE;
+function uv_idle_start(idle: puv_idle_t; cb: uv_idle_cb): integer; cdecl; external LIBUV_FILE;
 
-function uv_idle_stop; external LIBUV_FILE;
+function uv_idle_stop(idle: puv_idle_t): integer; cdecl; external LIBUV_FILE;
 
-function uv_async_init; external LIBUV_FILE;
+function uv_async_init(
+    loop: puv_loop_t;
+    async: puv_async_t;
+    async_cb: uv_async_cb
+) : integer; cdecl; external LIBUV_FILE;
 
-function uv_async_send; external LIBUV_FILE;
+function uv_async_send(async: puv_async_t): integer; cdecl; external LIBUV_FILE;
 
-function uv_timer_init; external LIBUV_FILE;
+function uv_timer_init(loop: puv_loop_t; handle: puv_timer_t): integer; cdecl; external LIBUV_FILE;
 
 function uv_timer_start; external LIBUV_FILE;
 

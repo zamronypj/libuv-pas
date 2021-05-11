@@ -372,22 +372,35 @@ function uv_pipe_pending_type(handle: puv_pipe_t): uv_handle_type; cdecl;
 
 function uv_pipe_chmod(handle: puv_pipe_t; flags: integer): integer; cdecl;
 
-function uv_poll_init(loop: puv_loop_t; handle: puv_poll_t; fd: integer)
-  : integer; cdecl;
+function uv_poll_init(
+    loop: puv_loop_t;
+    handle: puv_poll_t;
+    fd: integer
+) : integer; cdecl;
 
-function uv_poll_init_socket(loop: puv_loop_t; handle: puv_poll_t;
-  socket: uv_os_sock_t): integer; cdecl;
+function uv_poll_init_socket(
+    loop: puv_loop_t;
+    handle: puv_poll_t;
+    socket: uv_os_sock_t
+): integer; cdecl;
 
-function uv_poll_start(handle: puv_poll_t; Events: integer; cb: uv_poll_cb)
-  : integer; cdecl;
+function uv_poll_start(
+    handle: puv_poll_t;
+    events: integer;
+    cb: uv_poll_cb
+) : integer; cdecl;
 
 function uv_poll_stop(handle: puv_poll_t): integer; cdecl;
 
-function uv_prepare_init(loop: puv_loop_t; prepare: puv_prepare_t)
-  : integer; cdecl;
+function uv_prepare_init(
+    loop: puv_loop_t;
+    prepare: puv_prepare_t
+) : integer; cdecl;
 
-function uv_prepare_start(prepare: puv_prepare_t; cb: uv_prepare_cb)
-  : integer; cdecl;
+function uv_prepare_start(
+    prepare: puv_prepare_t;
+    cb: uv_prepare_cb
+) : integer; cdecl;
 
 function uv_prepare_stop(prepare: puv_prepare_t): integer; cdecl;
 
@@ -403,8 +416,11 @@ function uv_idle_start(idle: puv_idle_t; cb: uv_idle_cb): integer; cdecl;
 
 function uv_idle_stop(idle: puv_idle_t): integer; cdecl;
 
-function uv_async_init(loop: puv_loop_t; async: puv_async_t;
-  async_cb: uv_async_cb): integer; cdecl;
+function uv_async_init(
+    loop: puv_loop_t;
+    async: puv_async_t;
+    async_cb: uv_async_cb
+) : integer; cdecl;
 
 function uv_async_send(async: puv_async_t): integer; cdecl;
 (*
