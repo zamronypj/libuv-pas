@@ -1349,31 +1349,61 @@ function uv_async_send(async: puv_async_t): integer; cdecl; external LIBUV_FILE;
 
 function uv_timer_init(loop: puv_loop_t; handle: puv_timer_t): integer; cdecl; external LIBUV_FILE;
 
-function uv_timer_start; external LIBUV_FILE;
+function uv_timer_start(
+    handle: puv_timer_t;
+    cb: uv_timer_cb;
+    timeout: UInt64;
+    &repeat: UInt64
+): integer; cdecl; external LIBUV_FILE;
 
-function uv_timer_stop; external LIBUV_FILE;
+function uv_timer_stop(handle: puv_timer_t): integer; cdecl; external LIBUV_FILE;
 
-function uv_timer_again; external LIBUV_FILE;
+function uv_timer_again(handle: puv_timer_t): integer; cdecl; external LIBUV_FILE;
 
-procedure uv_timer_set_repeat; external LIBUV_FILE;
+procedure uv_timer_set_repeat(handle: puv_timer_t; &repeat: UInt64); cdecl; external LIBUV_FILE;
 
-function uv_timer_get_repeat; external LIBUV_FILE;
+function uv_timer_get_repeat(handle: puv_timer_t): UInt64; cdecl; external LIBUV_FILE;
 
-function uv_getaddrinfo; external LIBUV_FILE;
+function uv_getaddrinfo(
+    loop: puv_loop_t;
+    req: puv_getaddrinfo_t;
+    getaddrinfo_cb: uv_getaddrinfo_cb;
+    const node: PAnsiChar;
+    const service: PAnsiChar;
+    hints: PAddrInfo
+) : integer; cdecl; external LIBUV_FILE;
 
 procedure uv_freeaddrinfo; external LIBUV_FILE;
 
-function uv_getnameinfo; external LIBUV_FILE;
+function uv_getnameinfo(
+    loop: puv_loop_t;
+    req: puv_getnameinfo_t;
+    getnameinfo_cb: uv_getnameinfo_cb;
+    addr: psockaddr;
+    flags: integer
+) : integer; cdecl; external LIBUV_FILE;
 
-function uv_spawn; external LIBUV_FILE;
+function uv_spawn(
+    loop: puv_loop_t;
+    handle: puv_process_t;
+    const options: puv_process_options_t
+): integer; cdecl; external LIBUV_FILE;
 
-function uv_process_kill; external LIBUV_FILE;
+function uv_process_kill(
+    process: puv_process_t;
+    signum: integer
+) : integer; cdecl; external LIBUV_FILE;
 
-function uv_process_getpid; external LIBUV_FILE;
+function uv_process_getpid(process: puv_process_t): uv_pid_t; cdecl; external LIBUV_FILE;
 
-function uv_kill; external LIBUV_FILE;
+function uv_kill(pid: uv_pid_t; signum: integer): integer; cdecl; external LIBUV_FILE;
 
-function uv_queue_work; external LIBUV_FILE;
+function uv_queue_work(
+    loop: puv_loop_t;
+    req: puv_work_t;
+    work_cb: uv_work_cb;
+    after_work_cb: uv_after_work_cb
+): integer; cdecl; external LIBUV_FILE;
 
 function uv_cancel(req: puv_req_t): integer; cdecl; external LIBUV_FILE;
 function uv_req_size(&type: uv_req_type): SIZE_T; cdecl; external LIBUV_FILE;
@@ -1382,61 +1412,125 @@ procedure uv_req_set_data(const req: puv_req_t; data: Pointer); cdecl; external 
 function uv_req_get_type(const req: puv_req_t): uv_req_type; cdecl; external LIBUV_FILE;
 function uv_req_type_name(const req: puv_req_t): PAnsiChar; cdecl; external LIBUV_FILE;
 
-function uv_setup_args; external LIBUV_FILE;
+function uv_setup_args(
+    argc: integer;
+    argv: PAnsiCharArray
+) : PAnsiCharArray; cdecl; external LIBUV_FILE;
 
-function uv_get_process_title; external LIBUV_FILE;
+function uv_get_process_title(buffer: PAnsiChar; size: SIZE_T): integer; cdecl; external LIBUV_FILE;
 
-function uv_set_process_title; external LIBUV_FILE;
+function uv_set_process_title(const title: PAnsiChar): integer; cdecl; external LIBUV_FILE;
 
-function uv_resident_set_memory; external LIBUV_FILE;
+function uv_resident_set_memory(rss: psize_t): integer; cdecl; external LIBUV_FILE;
 
-function uv_uptime; external LIBUV_FILE;
+function uv_uptime(uptime: pdouble): integer; cdecl; external LIBUV_FILE;
 
-function uv_getrusage; external LIBUV_FILE;
+function uv_getrusage(rusage: puv_rusage_t): integer; cdecl; external LIBUV_FILE;
 
-function uv_os_homedir; external LIBUV_FILE;
+function uv_os_homedir(buffer: PAnsiChar; size: psize_t): integer; cdecl; external LIBUV_FILE;
 
-function uv_os_tmpdir; external LIBUV_FILE;
+function uv_os_tmpdir(buffer: PAnsiChar; size: psize_t): integer; cdecl; external LIBUV_FILE;
 
-function uv_os_get_passwd; external LIBUV_FILE;
+function uv_os_get_passwd(pwd: puv_passwd_t): integer; cdecl; external LIBUV_FILE;
 
-procedure uv_os_free_passwd; external LIBUV_FILE;
+procedure uv_os_free_passwd(pwd: puv_passwd_t); cdecl; external LIBUV_FILE;
 
-function uv_os_getpid; external LIBUV_FILE;
+function uv_os_getpid: uv_pid_t; cdecl; external LIBUV_FILE;
 
-function uv_cpu_info; external LIBUV_FILE;
+function uv_cpu_info(
+    var cpu_infos: puv_cpu_info_t;
+    var count: integer
+) : integer; cdecl; external LIBUV_FILE;
 
-procedure uv_free_cpu_info; external LIBUV_FILE;
+procedure uv_free_cpu_info(cpu_infos: puv_cpu_info_t; count: integer); cdecl; external LIBUV_FILE;
 
-function uv_interface_addresses; external LIBUV_FILE;
+function uv_interface_addresses(
+    var addresses: puv_interface_address_t;
+    var count: integer
+): integer; cdecl; external LIBUV_FILE;
 
 procedure uv_free_interface_addresses; external LIBUV_FILE;
 
 procedure uv_fs_req_cleanup; external LIBUV_FILE;
 
-function uv_fs_get_type; external LIBUV_FILE;
-function uv_fs_get_path; external LIBUV_FILE;
-function uv_fs_get_ptr; external LIBUV_FILE;
-function uv_fs_get_result; external LIBUV_FILE;
-function uv_fs_get_statbuf; external LIBUV_FILE;
+function uv_fs_get_type(const req: puv_fs_t): uv_fs_type; cdecl; external LIBUV_FILE;
+function uv_fs_get_path(const req: puv_fs_t): PUTF8Char; cdecl; external LIBUV_FILE;
+function uv_fs_get_ptr(const req: puv_fs_t): Pointer; cdecl; external LIBUV_FILE;
+function uv_fs_get_result(const req: puv_fs_t): SSIZE_T; cdecl; external LIBUV_FILE;
+function uv_fs_get_statbuf(const req: uv_fs_t): puv_stat_t; cdecl; external LIBUV_FILE;
 
-function uv_fs_close; external LIBUV_FILE;
+function uv_fs_close(
+    loop: puv_loop_t;
+    req: puv_fs_t;
+    &file: uv_file;
+    cb: uv_fs_cb
+): integer; cdecl; external LIBUV_FILE;
 
-function uv_fs_open; external LIBUV_FILE;
+function uv_fs_open(
+    loop: puv_loop_t;
+    req: puv_fs_t;
+    path: PUTF8Char;
+    flags: integer;
+    mode: integer;
+    cb: uv_fs_cb
+): integer; cdecl; external LIBUV_FILE;
 
-function uv_fs_read; external LIBUV_FILE;
+function uv_fs_read(
+    loop: puv_loop_t;
+    req: puv_fs_t;
+    &file: uv_file;
+    bufs: puv_buf_t;
+    nbufs: UInt;
+    offset: Int64;
+    cb: uv_fs_cb
+) : integer; cdecl; external LIBUV_FILE;
 
-function uv_fs_unlink; external LIBUV_FILE;
+function uv_fs_unlink(
+    loop: puv_loop_t;
+    req: puv_fs_t;
+    path: PUTF8Char;
+    cb: uv_fs_cb
+) : integer; cdecl; external LIBUV_FILE;
 
-function uv_fs_write; external LIBUV_FILE;
+function uv_fs_write(
+    loop: puv_loop_t;
+    req: puv_fs_t;
+    &file: uv_file;
+    bufs: puv_buf_t;
+    nbufs: UInt;
+    offset: Int64;
+    cb: uv_fs_cb
+): integer; cdecl; external LIBUV_FILE;
 
-function uv_fs_mkdir; external LIBUV_FILE;
+function uv_fs_mkdir(
+    loop: puv_loop_t;
+    req: puv_fs_t;
+    path: PUTF8Char;
+    mode: integer;
+    cb: uv_fs_cb
+): integer; cdecl; external LIBUV_FILE;
 
-function uv_fs_mkdtemp; external LIBUV_FILE;
+function uv_fs_mkdtemp(
+    loop: puv_loop_t;
+    req: puv_fs_t;
+    tpl: PUTF8Char;
+    cb: uv_fs_cb
+): integer; cdecl; external LIBUV_FILE;
 
-function uv_fs_rmdir; external LIBUV_FILE;
+function uv_fs_rmdir(
+    loop: puv_loop_t;
+    req: puv_fs_t;
+    path: PUTF8Char;
+    cb: uv_fs_cb
+): integer; cdecl; external LIBUV_FILE;
 
-function uv_fs_scandir; external LIBUV_FILE;
+function uv_fs_scandir(
+    loop: puv_loop_t;
+    req: puv_fs_t;
+    path: PUTF8Char;
+    flags: integer;
+    cb: uv_fs_cb
+): integer; cdecl; external LIBUV_FILE;
 
 function uv_fs_scandir_next; external LIBUV_FILE;
 

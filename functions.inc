@@ -431,8 +431,12 @@ function uv_async_send(async: puv_async_t): integer; cdecl;
 
 function uv_timer_init(loop: puv_loop_t; handle: puv_timer_t): integer; cdecl;
 
-function uv_timer_start(handle: puv_timer_t; cb: uv_timer_cb; Timeout: UInt64;
-  &repeat: UInt64): integer; cdecl;
+function uv_timer_start(
+    handle: puv_timer_t;
+    cb: uv_timer_cb;
+    timeout: UInt64;
+    &repeat: UInt64
+): integer; cdecl;
 
 function uv_timer_stop(handle: puv_timer_t): integer; cdecl;
 
@@ -447,9 +451,14 @@ function uv_timer_get_repeat(handle: puv_timer_t): UInt64; cdecl;
   * Request object for uv_getaddrinfo.
 *)
 
-function uv_getaddrinfo(loop: puv_loop_t; req: puv_getaddrinfo_t;
-  getaddrinfo_cb: uv_getaddrinfo_cb; const node: PAnsiChar;
-  const service: PAnsiChar; hints: PAddrInfo): integer; cdecl;
+function uv_getaddrinfo(
+    loop: puv_loop_t;
+    req: puv_getaddrinfo_t;
+    getaddrinfo_cb: uv_getaddrinfo_cb;
+    const node: PAnsiChar;
+    const service: PAnsiChar;
+    hints: PAddrInfo
+) : integer; cdecl;
 
 procedure uv_freeaddrinfo(ai: PAddrInfo); cdecl;
 (*
@@ -457,17 +466,26 @@ procedure uv_freeaddrinfo(ai: PAddrInfo); cdecl;
   *
   * Request object for uv_getnameinfo.
 *)
-function uv_getnameinfo(loop: puv_loop_t; req: puv_getnameinfo_t;
-  getnameinfo_cb: uv_getnameinfo_cb; addr: psockaddr; flags: integer)
-  : integer; cdecl;
+function uv_getnameinfo(
+    loop: puv_loop_t;
+    req: puv_getnameinfo_t;
+    getnameinfo_cb: uv_getnameinfo_cb;
+    addr: psockaddr;
+    flags: integer
+) : integer; cdecl;
 (* uv_spawn() options. *)
 { !!!3 unknown typedef }
 
-function uv_spawn(loop: puv_loop_t; handle: puv_process_t;
-  const options: puv_process_options_t): integer; cdecl;
+function uv_spawn(
+    loop: puv_loop_t;
+    handle: puv_process_t;
+    const options: puv_process_options_t
+): integer; cdecl;
 
-function uv_process_kill(process: puv_process_t; signum: integer)
-  : integer; cdecl;
+function uv_process_kill(
+    process: puv_process_t;
+    signum: integer
+) : integer; cdecl;
 
 function uv_process_getpid(process: puv_process_t): uv_pid_t; cdecl;
 
@@ -476,11 +494,17 @@ function uv_kill(pid: uv_pid_t; signum: integer): integer; cdecl;
   * uv_work_t is a subclass of uv_req_t.
 *)
 
-function uv_queue_work(loop: puv_loop_t; req: puv_work_t; work_cb: uv_work_cb;
-  after_work_cb: uv_after_work_cb): integer; cdecl;
+function uv_queue_work(
+    loop: puv_loop_t;
+    req: puv_work_t;
+    work_cb: uv_work_cb;
+    after_work_cb: uv_after_work_cb
+): integer; cdecl;
 
-function uv_setup_args(argc: integer; argv: PAnsiCharArray)
-  : PAnsiCharArray; cdecl;
+function uv_setup_args(
+    argc: integer;
+    argv: PAnsiCharArray
+) : PAnsiCharArray; cdecl;
 
 function uv_get_process_title(buffer: PAnsiChar; size: SIZE_T): integer; cdecl;
 
@@ -502,16 +526,22 @@ procedure uv_os_free_passwd(pwd: puv_passwd_t); cdecl;
 
 function uv_os_getpid: uv_pid_t; cdecl;
 
-function uv_cpu_info(var cpu_infos: puv_cpu_info_t; var count: integer)
-  : integer; cdecl;
+function uv_cpu_info(
+    var cpu_infos: puv_cpu_info_t;
+    var count: integer
+) : integer; cdecl;
 
 procedure uv_free_cpu_info(cpu_infos: puv_cpu_info_t; count: integer); cdecl;
 
-function uv_interface_addresses(var addresses: puv_interface_address_t;
-  var count: integer): integer; cdecl;
+function uv_interface_addresses(
+    var addresses: puv_interface_address_t;
+    var count: integer
+): integer; cdecl;
 
-procedure uv_free_interface_addresses(addresses: puv_interface_address_t;
-  count: integer); cdecl;
+procedure uv_free_interface_addresses(
+    addresses: puv_interface_address_t;
+    count: integer
+); cdecl;
 
 procedure uv_fs_req_cleanup(req: puv_fs_t); cdecl;
 
@@ -521,32 +551,78 @@ function uv_fs_get_ptr(const req: puv_fs_t): Pointer; cdecl;
 function uv_fs_get_result(const req: puv_fs_t): SSIZE_T; cdecl;
 function uv_fs_get_statbuf(const req: uv_fs_t): puv_stat_t; cdecl;
 
-function uv_fs_close(loop: puv_loop_t; req: puv_fs_t; &file: uv_file;
-  cb: uv_fs_cb): integer; cdecl;
+function uv_fs_close(
+    loop: puv_loop_t;
+    req: puv_fs_t;
+    &file: uv_file;
+    cb: uv_fs_cb
+): integer; cdecl;
 
-function uv_fs_open(loop: puv_loop_t; req: puv_fs_t; path: PUTF8Char;
-  flags: integer; mode: integer; cb: uv_fs_cb): integer; cdecl;
+function uv_fs_open(
+    loop: puv_loop_t;
+    req: puv_fs_t;
+    path: PUTF8Char;
+    flags: integer;
+    mode: integer;
+    cb: uv_fs_cb
+): integer; cdecl;
 
-function uv_fs_read(loop: puv_loop_t; req: puv_fs_t; &file: uv_file;
-  bufs: puv_buf_t; nbufs: UInt; offset: Int64; cb: uv_fs_cb): integer; cdecl;
+function uv_fs_read(
+    loop: puv_loop_t;
+    req: puv_fs_t;
+    &file: uv_file;
+    bufs: puv_buf_t;
+    nbufs: UInt;
+    offset: Int64;
+    cb: uv_fs_cb
+) : integer; cdecl;
 
-function uv_fs_unlink(loop: puv_loop_t; req: puv_fs_t; path: PUTF8Char;
-  cb: uv_fs_cb): integer; cdecl;
+function uv_fs_unlink(
+    loop: puv_loop_t;
+    req: puv_fs_t;
+    path: PUTF8Char;
+    cb: uv_fs_cb
+) : integer; cdecl;
 
-function uv_fs_write(loop: puv_loop_t; req: puv_fs_t; &file: uv_file;
-  bufs: puv_buf_t; nbufs: UInt; offset: Int64; cb: uv_fs_cb): integer; cdecl;
+function uv_fs_write(
+    loop: puv_loop_t;
+    req: puv_fs_t;
+    &file: uv_file;
+    bufs: puv_buf_t;
+    nbufs: UInt;
+    offset: Int64;
+    cb: uv_fs_cb
+): integer; cdecl;
 
-function uv_fs_mkdir(loop: puv_loop_t; req: puv_fs_t; path: PUTF8Char;
-  mode: integer; cb: uv_fs_cb): integer; cdecl;
+function uv_fs_mkdir(
+    loop: puv_loop_t;
+    req: puv_fs_t;
+    path: PUTF8Char;
+    mode: integer;
+    cb: uv_fs_cb
+): integer; cdecl;
 
-function uv_fs_mkdtemp(loop: puv_loop_t; req: puv_fs_t; tpl: PUTF8Char;
-  cb: uv_fs_cb): integer; cdecl;
+function uv_fs_mkdtemp(
+    loop: puv_loop_t;
+    req: puv_fs_t;
+    tpl: PUTF8Char;
+    cb: uv_fs_cb
+): integer; cdecl;
 
-function uv_fs_rmdir(loop: puv_loop_t; req: puv_fs_t; path: PUTF8Char;
-  cb: uv_fs_cb): integer; cdecl;
+function uv_fs_rmdir(
+    loop: puv_loop_t;
+    req: puv_fs_t;
+    path: PUTF8Char;
+    cb: uv_fs_cb
+): integer; cdecl;
 
-function uv_fs_scandir(loop: puv_loop_t; req: puv_fs_t; path: PUTF8Char;
-  flags: integer; cb: uv_fs_cb): integer; cdecl;
+function uv_fs_scandir(
+    loop: puv_loop_t;
+    req: puv_fs_t;
+    path: PUTF8Char;
+    flags: integer;
+    cb: uv_fs_cb
+): integer; cdecl;
 
 function uv_fs_scandir_next(req: puv_fs_t; ent: puv_dirent_t): integer; cdecl;
 
