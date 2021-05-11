@@ -9,6 +9,8 @@ unit libuv;
 
 interface
 
+{$MODE OBJFPC}
+
 uses
 
     {$IFDEF MSWINDOWS}
@@ -19,6 +21,7 @@ uses
     baseunix,
     unixtype,
     pthreads,
+    cnetdb,
     {$ENDIF}
 
     sockets,
@@ -586,6 +589,8 @@ type
 
     puv_stat_t = ^uv_stat_t;
 
+    uv_fs_cb = procedure(req: puv_fs_t); cdecl;
+
     // uv_fs_t is a subclass of uv_req_t.
     uv_fs_s = record
       case Boolean of
@@ -658,7 +663,7 @@ type
 
     uv_passwd_s = record
         username: PAnsiChar;
-        uid, gid: Long;
+        uid, gid: clong;
         shell, homedir: PAnsiChar;
     end;
 
@@ -802,6 +807,12 @@ type
   puv_stdio_container_t = ^uv_stdio_container_t;
 {$POINTERMATH OFF}
   uv_stdio_container_t = uv_stdio_container_s;
+
+  uv_exit_cb = procedure(
+      process: puv_process_t;
+      exit_status: Int64;
+      term_signal: integer
+  ); cdecl;
 
   uv_process_options_s = record
     exit_cb: uv_exit_cb; (* Called after the process exits. *)
@@ -961,41 +972,47 @@ type
 
 implementation
 
-function uv_get_constants; external LIBUV_FILE;
+function uv_version : uint;cdecl; external LIBUV_FILE;
 
-function uv_version; external LIBUV_FILE;
+function uv_version_string : PUTF8Char; cdecl; external LIBUV_FILE;
 
-function uv_version_string; external LIBUV_FILE;
+function uv_replace_allocator(
+    malloc_func: uv_malloc_func;
+    realloc_func: uv_realloc_func;
+    calloc_func: uv_calloc_func;
+    free_func: uv_free_func
+): integer; cdecl; external LIBUV_FILE;
 
-function uv_replace_allocator; external LIBUV_FILE;
+function uv_default_loop: puv_loop_t; cdecl; external LIBUV_FILE;
 
-function uv_default_loop; external LIBUV_FILE;
+function uv_loop_init(loop: puv_loop_t): integer; cdecl; external LIBUV_FILE;
 
-function uv_loop_init; external LIBUV_FILE;
+function uv_loop_close(loop: puv_loop_t): integer; cdecl; external LIBUV_FILE;
 
-function uv_loop_close; external LIBUV_FILE;
+function uv_loop_new: puv_loop_t; cdecl; external LIBUV_FILE;
 
-function uv_loop_new; external LIBUV_FILE;
+procedure uv_loop_delete(loop: puv_loop_t); cdecl; external LIBUV_FILE;
 
-procedure uv_loop_delete; external LIBUV_FILE;
+function uv_loop_size: SIZE_T; cdecl; external LIBUV_FILE;
 
-function uv_loop_size; external LIBUV_FILE;
+function uv_loop_alive(loop: puv_loop_t): integer; cdecl; external LIBUV_FILE;
 
-function uv_loop_alive; external LIBUV_FILE;
+function uv_loop_configure(
+    loop: puv_loop_t;
+    option: uv_loop_option
+): integer; varargs; cdecl; external LIBUV_FILE;
 
-function uv_loop_configure; external LIBUV_FILE;
+function uv_run(loop: puv_loop_t; mode: uv_run_mode): integer; cdecl; external LIBUV_FILE;
 
-function uv_run; external LIBUV_FILE;
+procedure uv_stop(loop: puv_loop_t); cdecl; external LIBUV_FILE;
 
-procedure uv_stop; external LIBUV_FILE;
+procedure uv_ref(loop: puv_handle_t); cdecl; external LIBUV_FILE;
 
-procedure uv_ref; external LIBUV_FILE;
+procedure uv_unref(handle: puv_handle_t); cdecl; external LIBUV_FILE;
 
-procedure uv_unref; external LIBUV_FILE;
+function uv_has_ref(const handle: puv_handle_t): integer; cdecl; external LIBUV_FILE;
 
-function uv_has_ref; external LIBUV_FILE;
-
-procedure uv_update_time; external LIBUV_FILE;
+procedure uv_update_time(loop: puv_loop_t); cdecl; external LIBUV_FILE;
 
 function uv_no; external LIBUV_FILE;
 

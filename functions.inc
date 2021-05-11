@@ -6,7 +6,6 @@
  * @license   https://github.com/zamronypj/libuv/blob/master/LICENSE (MIT)
  *}
 
-function uv_get_constants: Pnodepas_constants;
 
 function UV_ONCE_INIT: uv_once_t;
 
@@ -195,19 +194,19 @@ function uv_tcp_simultaneous_accepts(
 
 function uv_tcp_bind(
     handle: puv_tcp_t;
-    const addr: TSockAddr_in_any;
+    const addr: sockaddr;
     flags: UInt
 ): integer; cdecl;
 
 function uv_tcp_getsockname(
     handle: puv_tcp_t;
-    out name: TSockAddr_in_any;
+    out name: sockaddr;
     var namelen: integer
 ): integer; cdecl;
 
 function uv_tcp_getpeername(
     handle: puv_tcp_t;
-    out name: TSockAddr_in_any;
+    out name: sockaddr;
     var namelen: integer
 ): integer; cdecl;
 
@@ -216,7 +215,7 @@ function uv_tcp_getpeername(
 function uv_tcp_connect(
     req: puv_connect_t;
     handle: puv_tcp_t;
-    addr: PSockAddr_in_any;
+    addr: psockaddr;
     cb: uv_connect_cb
 ): integer; cdecl;
 
@@ -236,13 +235,13 @@ function uv_udp_open(handle: puv_udp_t; sock: uv_os_sock_t): integer; cdecl;
 
 function uv_udp_bind(
     handle: puv_udp_t;
-    const addr: TSockAddr_in_any;
+    const addr: sockaddr;
     flags: UInt
 ): integer; cdecl;
 
 function uv_udp_connect(
     handle: puv_udp_t;
-    const addr: TSockAddr_in_any
+    const addr: sockaddr
 ) : integer; cdecl;
 
 function uv_udp_getsockname(
@@ -640,10 +639,10 @@ function uv_fs_event_getpath(handle: puv_fs_event_t; buffer: PUTF8Char;
 
 function uv_get_osfhandle(fd: uv_file): uv_os_fd_t; inline;
 
-function uv_ip4_addr(ip: PAnsiChar; Port: integer; out addr: Tsockaddr_in)
+function uv_ip4_addr(ip: PAnsiChar; Port: integer; out addr: sockaddr_in)
   : integer; cdecl;
 
-function uv_ip6_addr(ip: PAnsiChar; Port: integer; out addr: Tsockaddr_in6)
+function uv_ip6_addr(ip: PAnsiChar; Port: integer; out addr: sockaddr_in6)
   : integer; cdecl;
 
 function uv_ip4_name(src: PSockAddr_In; dst: PAnsiChar; size: SIZE_T)
