@@ -6,12 +6,12 @@ This is [libuv](https://libuv.org) header translation for [Free Pascal](https://
 [node.pas](https://github.com/vovach777/node.pas). Some codes that were not related to
 [libuv header](https://github.com/libuv/libuv/blob/v1.x/include/uv.h) were removed.
 
-This header translation is work in progress and currently untested.
+This header translation is work in progress.
 
-## Libuv version
-By default, this header translation use Libuv 1.18.0
-To use Libuv version >= 1.19.0 add conditional defines `LIBUV_1_19_0`.
-To use Libuv version >= 1.27.0, use `LIBUV_1_27_0`.
+## libuv version
+By default, this header translation use libuv 1.18.0.
+To use libuv version >= 1.19.0 add conditional defines `LIBUV_1_19_0`.
+To use libuv version >= 1.27.0, use `LIBUV_1_27_0`.
 
 ```
 {$DEFINE LIBUV_1_19_0}
