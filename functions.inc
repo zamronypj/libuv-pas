@@ -62,7 +62,7 @@ function uv_has_ref(const handle: puv_handle_t): integer; cdecl;
 
 procedure uv_update_time(loop: puv_loop_t); cdecl;
 
-function uv_no(loop: puv_loop_t): UInt64; cdecl;
+function uv_now(loop: puv_loop_t): UInt64; cdecl;
 
 function uv_backend_fd(const loop: puv_loop_t): integer; cdecl;
 
@@ -81,11 +81,14 @@ function uv_shutdown(
 function uv_handle_size(&type: uv_handle_type): SIZE_T; cdecl;
 
 function uv_cancel(req: puv_req_t): integer; cdecl;
+
+{$IFDEF LIBUV_1_19_0}
 function uv_req_size(&type: uv_req_type): SIZE_T; cdecl;
 function uv_req_get_data(const req: puv_req_t): Pointer; cdecl;
 procedure uv_req_set_data(const req: puv_req_t; data: Pointer); cdecl;
 function uv_req_get_type(const req: puv_req_t): uv_req_type; cdecl;
 function uv_req_type_name(const req: puv_req_t): PAnsiChar; cdecl;
+{$ENDIF}
 
 function uv_is_active(handle: puv_handle_t): integer; cdecl;
 
@@ -239,10 +242,18 @@ function uv_udp_bind(
     flags: UInt
 ): integer; cdecl;
 
+{$IFDEF LIBUV_1_27_0}
 function uv_udp_connect(
     handle: puv_udp_t;
     const addr: sockaddr
 ) : integer; cdecl;
+
+function uv_udp_getpeername(
+    handle: puv_udp_t;
+    name: psockaddr;
+    var namelen: integer
+): integer; cdecl;
+{$ENDIF}
 
 function uv_udp_getsockname(
     handle: puv_udp_t;
@@ -250,14 +261,10 @@ function uv_udp_getsockname(
     var namelen: integer
 ): integer; cdecl;
 
-function uv_udp_getpeername(
-    handle: puv_udp_t;
-    name: psockaddr;
-    var namelen: integer
-): integer; cdecl;
-
-function uv_udp_get_send_queue_count(const handle: puv_udp_t): SIZE_T;cdecl;
-function uv_udp_get_send_queue_size(const handle: puv_udp_t): SIZE_T;cdecl;
+{$IFDEF LIBUV_1_19_0}
+function uv_udp_get_send_queue_count(const handle: puv_udp_t): SIZE_T; cdecl;
+function uv_udp_get_send_queue_size(const handle: puv_udp_t): SIZE_T; cdecl;
+{$ENDIF}
 
 function uv_udp_set_membership(
     handle: puv_udp_t;
@@ -487,7 +494,9 @@ function uv_process_kill(
     signum: integer
 ) : integer; cdecl;
 
-function uv_process_getpid(process: puv_process_t): uv_pid_t; cdecl;
+{$IFDEF LIBUV_1_19_0}
+function uv_process_get_pid(process: puv_process_t): uv_pid_t; cdecl;
+{$ENDIF}
 
 function uv_kill(pid: uv_pid_t; signum: integer): integer; cdecl;
 (*
@@ -545,11 +554,13 @@ procedure uv_free_interface_addresses(
 
 procedure uv_fs_req_cleanup(req: puv_fs_t); cdecl;
 
+{$IFDEF LIBUV_1_19_0}
 function uv_fs_get_type(const req: puv_fs_t): uv_fs_type; cdecl;
 function uv_fs_get_path(const req: puv_fs_t): PUTF8Char; cdecl;
 function uv_fs_get_ptr(const req: puv_fs_t): Pointer; cdecl;
 function uv_fs_get_result(const req: puv_fs_t): SSIZE_T; cdecl;
 function uv_fs_get_statbuf(const req: uv_fs_t): puv_stat_t; cdecl;
+{$ENDIF}
 
 function uv_fs_close(
     loop: puv_loop_t;
@@ -949,30 +960,3 @@ function uv_thread_self: uv_thread_t; cdecl;
 function uv_thread_join(tid: puv_thread_t): integer; cdecl;
 
 function uv_thread_equal(t1: puv_thread_t; t2: puv_thread_t): integer; cdecl;
-(* The presence of these unions force similar struct layout. *)
-
-function uv_rwlock_size(): SIZE_T; cdecl;
-function uv_cond_size(): SIZE_T; cdecl;
-function uv_barrier_size(): SIZE_T; cdecl;
-function uv_sem_size(): SIZE_T; cdecl;
-function uv_mutex_size(): SIZE_T; cdecl;
-function uv_os_sock_size(): SIZE_T; cdecl;
-function uv_os_fd_size(): SIZE_T; cdecl;
-function uv_tcp_accept_size(): SIZE_T; cdecl;
-function uv_pipe_accept_size(): SIZE_T; cdecl;
-// function uv_buf_size() : SIZE_T; cdecl;
-
-procedure uv_set_close_cb(h: puv_handle_t; close_cb: uv_close_cb); cdecl;
-function uv_get_close_cb(h: puv_handle_t): uv_close_cb; cdecl;
-
-function uv_get_handle_type(h: puv_handle_t): uv_handle_type; cdecl;
-procedure uv_set_user_data(h: Pointer; data: Pointer); cdecl;
-function uv_get_user_data(h: Pointer): Pointer; cdecl;
-function uv_get_req_type(t: puv_req_t): uv_req_type; cdecl;
-// function uv_process_options_size : SIZE_T; cdecl;
-function uv_get_process_pid(h: puv_process_t): integer; cdecl;
-
-function uv_now(loop: puv_loop_t): UInt64; cdecl;
-
-// procedure WakeupLoop(loop: puv_loop_t);
-// procedure uv_buf_set(var buf:uv_buf_t; base:PByte; len: Cardinal); cdecl;

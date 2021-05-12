@@ -10,6 +10,13 @@ unit libuv;
 interface
 
 {$MODE OBJFPC}
+{$PACKRECORDS C}
+
+//libuv v1.27.0 or newer
+{$IFDEF LIBUV_1_27_0}
+    //libuv v1.19.0 or newer
+    {$DEFINE LIBUV_1_19_0}
+{$ENDIF}
 
 uses
 
