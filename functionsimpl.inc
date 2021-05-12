@@ -195,19 +195,19 @@ function uv_tcp_simultaneous_accepts(
 
 function uv_tcp_bind(
     handle: puv_tcp_t;
-    const addr: sockaddr;
+    addr: psockaddr;
     flags: UInt
 ): integer; cdecl; external LIBUV_FILE;
 
 function uv_tcp_getsockname(
     handle: puv_tcp_t;
-    out name: sockaddr;
+    name: psockaddr;
     var namelen: integer
 ): integer; cdecl; external LIBUV_FILE;
 
 function uv_tcp_getpeername(
     handle: puv_tcp_t;
-    out name: sockaddr;
+    name: psockaddr;
     var namelen: integer
 ): integer; cdecl; external LIBUV_FILE;
 
@@ -236,7 +236,7 @@ function uv_udp_open(handle: puv_udp_t; sock: uv_os_sock_t): integer; cdecl; ext
 
 function uv_udp_bind(
     handle: puv_udp_t;
-    const addr: sockaddr;
+    addr: psockaddr;
     flags: UInt
 ): integer; cdecl; external LIBUV_FILE;
 
@@ -244,7 +244,7 @@ function uv_udp_bind(
 
 function uv_udp_connect(
     handle: puv_udp_t;
-    const addr: sockaddr
+    addr: psockaddr
 ) : integer; cdecl; external LIBUV_FILE;
 
 function uv_udp_getpeername(
@@ -858,21 +858,37 @@ function uv_fs_event_getpath(
 
 function uv_get_osfhandle(fd: uv_file): uv_os_fd_t; cdecl; external LIBUV_FILE;
 
-function uv_ip4_addr(ip: PAnsiChar; Port: integer; out addr: sockaddr_in)
-  : integer; cdecl; external LIBUV_FILE;
+function uv_ip4_addr(
+    ip: PAnsiChar;
+    Port: integer;
+    addr: psockaddr_in
+) : integer; cdecl; external LIBUV_FILE;
 
-function uv_ip6_addr(ip: PAnsiChar; Port: integer; out addr: sockaddr_in6)
-  : integer; cdecl; external LIBUV_FILE;
+function uv_ip6_addr(
+    ip: PAnsiChar;
+    Port: integer;
+    addr: psockaddr_in6
+) : integer; cdecl; external LIBUV_FILE;
 
-function uv_ip4_name(src: PSockAddr_In; dst: PAnsiChar; size: SIZE_T)
-  : integer; cdecl; external LIBUV_FILE;
+function uv_ip4_name(
+    src: PSockAddr_In;
+    dst: PAnsiChar;
+    size: SIZE_T
+) : integer; cdecl; external LIBUV_FILE;
 
 
-function uv_ip6_name(src: psockaddr_In6; dst: PAnsiChar; size: SIZE_T)
-  : integer; cdecl; external LIBUV_FILE;
+function uv_ip6_name(
+    src: psockaddr_In6;
+    dst: PAnsiChar;
+    size: SIZE_T
+) : integer; cdecl; external LIBUV_FILE;
 
-function uv_inet_ntop(af: integer; src: pinteger; dst: PAnsiChar; size: SIZE_T)
-  : integer; cdecl; external LIBUV_FILE;
+function uv_inet_ntop(
+    af: integer;
+    src: pinteger;
+    dst: PAnsiChar;
+    size: SIZE_T
+) : integer; cdecl; external LIBUV_FILE;
 
 function uv_inet_pton(af: integer; src: PAnsiChar; out dst): integer; cdecl; external LIBUV_FILE;
 
