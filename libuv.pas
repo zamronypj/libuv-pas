@@ -350,8 +350,6 @@ type
 
     puv_loop_t = ^uv_loop_t;
 
-    puv_handle_t = ^uv_handle_s;
-
     uv_file = uv_os_fd_t;
 
 {$POINTERMATH ON}
@@ -380,9 +378,35 @@ type
         UV_DIRENT_BLOCK
     );
 
+    puv_handle_t = ^uv_handle_s;
+    uv_close_cb = procedure(handle: puv_handle_t); cdecl;
 
     uv_handle_s = record
-        internal: array [1 .. sizeof_handle_t] of Byte;
+        case byte of
+            0 : (
+                data : pointer;
+                loop : puvloop_t;
+                &type : uv_handle_type;
+                close_cb : uv_close_cb;
+                handle_queue : array[0..1] of pointer;
+                case boolean of
+                    false : (fd : integer);
+                    true : (reserved : array [0..3] of byte);
+
+                {$IFDEF WINDOWS}
+                endgame_next : puv_handle_t;
+                flags : uint;
+                {$ENDIF}
+
+                {$IFDEF UNIX}
+                next_closing : puv_handle_t;
+                flags : uint;
+                {$ENDIF}
+
+            );
+            1 : (
+                internal: array [1 .. sizeof_handle_t] of Byte;
+            );
     end;
 
     uv_handle_t = uv_handle_s;
